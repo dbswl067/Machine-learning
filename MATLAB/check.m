@@ -267,7 +267,7 @@ for i = 1:epochs %replace by epochs
                     I (j) = Inh;
                 end;
             end;
-       
+       /////
             u(j,t+1) = weights_e(:,j)'*EPSP(:,t)-I(j);
             if u(j,t+1)<0
                 u(j,t+1)=0;
