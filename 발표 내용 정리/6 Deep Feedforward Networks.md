@@ -5,3 +5,4 @@ Deep feedforward network는 흔히 말하는 Multi-layer perceptron, 어떤 func
 
 ## feedforward
 feedforward라고 부르는 이유는, 학습의 정보의 흐름을 보시게 된다면 데이터 x로 부터 시작돼서, 함수 f를 정의하고, 정의된 함수를 통해 output 인 y^ 를 산출하게 된다.
+fee
