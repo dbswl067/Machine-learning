@@ -32,3 +32,8 @@ feedforward 네트워크를 이해하는 것은 linear model과 이의 한계를
 
 따라서 linear function 대신 nonlinear function을 사용하여 nonlinear transformation ϕ(x)를 사용한다.
 즉, ϕ 를 이용해서 feature x 를 새로운 representation으로 사용하는 것이다.
+
+## Reference
+- [딥 뉴럴 네트워크](https://seungheondoh.netlify.app/blog/mlp)
+- [인공 신경망 훑어보기](https://wikidocs.net/24987)
+- [딥러닝 피드 포워드](https://m.blog.naver.com/PostView.nhn?blogId=beyondlegend&logNo=221373971859&proxyReferer=https:%2F%2Fwww.google.com%2F)
