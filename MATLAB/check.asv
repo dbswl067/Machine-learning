@@ -154,7 +154,7 @@ for i = 1:epochs %replace by epochs % 1000회 for문 돌림
             % u / K > 0.00013
             if u(j, t+1) / K(j) > 1.3e-04
                 prob(j, t+1) = 1;
-            % u / K < 0.000003
+            % u / K < 0.00003
             elseif u(j, t+1) / K(j) < 3e-05
                 prob(j, t+1) = 0;
             else
@@ -168,7 +168,7 @@ for i = 1:epochs %replace by epochs % 1000회 for문 돌림
                 num_PF = num_PF+1;
                 z(j, t+1) = 1;
                 t_post(j) = t+1;
-                K(j) = K(j) + del_K * K(j);
+                K(j) = K(j) + del_K*K(j);
                 if K(j) > Kf% 500,000,000 보다 클 경우
                     K(j) = Kf; % 500,000,000
                 end;
@@ -203,10 +203,10 @@ for i = 1:epochs %replace by epochs % 1000회 for문 돌림
     % Update and show image
     for num=0: OpNeurons-1      % 10회 for문 돌림
         weights_com(1:28,num*28+1:(num+1)*28)=reshape(weights_e(:,num+1),[28,28]);   % weights_e를 784X1로 쪼개서 28X28로 reshape한 후 weights_com에 넣는다.
-    colormap(jet);                          % 제트 컬러맵을 가져온다.
-    imagesc(weights_com)                    % 스케일링된 색으로 이미지를 표시한다.
-    drawnow                                 % for문을 다 돌고 난 후 그래프가 그려진다.
-    pause(0.04);                            % 일시정지 기능을 한다.
+        colormap(jet);
+        imagesc(weights_com)
+        drawnow
+        pause(0.04);
     end
 
     %Calculate voltage and conductances
