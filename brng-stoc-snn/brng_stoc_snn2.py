@@ -645,7 +645,7 @@ for i,name in enumerate(input_population_names):
     input_groups[name+'e'].rates = 0
 
 # Configure the run-time simulation parameters
-net.run(0 * second)
+net.run(0*second)
 if(test_mode and use_testing_set):
    j = 0
    k = 0
