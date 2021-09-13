@@ -304,10 +304,10 @@ dt_clock            = 0.5 * b.ms  # Need to change the default clock option in g
 num_timesteps       = single_example_time / dt_clock # 안 씀
 runtime             = num_examples * (single_example_time + resting_time)
 
-use_testing_set       = False
+use_testing_set       = True
 use_weight_dependence = True  # Unused
 use_classic_STDP      = True  # Unused
-test_mode             = False
+test_mode             = True
 tag_mode              = False
 
 if num_examples < 10000:
