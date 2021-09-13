@@ -411,7 +411,7 @@ v_thresh_e = '(v>(theta - offset + -52.*mV)) and (timer>refrac_e)'
 
 
 neuron_eqs_e = '''
-        I_post = (ge-gi)                            : 1
+        I_ipost = (ge-gi)                            : 1
         dv/dt = ((v_rest_e - v) + (I_synE+I_synI) / nS) / (100*ms)  : volt (unless refractory)
         I_synE = ge * nS *         -v                           : amp
         I_synI = gi * nS * (-100.*mV-v)                          : amp
@@ -439,7 +439,7 @@ v_thresh_i = 'v>-40.*mV'
 refrac_i   =  2.  * b.ms
 
 neuron_eqs_i = '''
-        I_post = (ge-gi)      : 1
+        I_ipost = (ge-gi)      : 1
         dv/dt = ((v_rest_i - v) + (I_synE+I_synI) / nS) / (10*ms)  : volt (unless refractory)
         I_synE = ge * nS *         -v                           : amp
         I_synI = gi * nS * (-85.*mV-v)                          : amp
@@ -448,7 +448,7 @@ neuron_eqs_i = '''
         '''
 
 # Update the spiking mechanism of the probabilistic inhibitory neuron
-v_thresh_i = '(I_post > 5)'
+v_thresh_i = '(I_ipost > 5)'
 
 #--------------------------------------------------------------------------
 # Implement STDP for synapses connecting the input and liquid-excitatory neurons
@@ -587,8 +587,8 @@ for name in population_names:  # population_names: A
         spike_monitors[name + 'i'] = b.SpikeMonitor(neuron_groups[name + 'i'])
 
     if record_state:
-        Ipost_monitors['Ae'] = b.StateMonitor(neuron_groups['Ae'], 'I_post', record=True)
-        Ipost_monitors['Ai'] = b.StateMonitor(neuron_groups['Ai'], 'I_post', record=True)
+        Ipost_monitors['Ae'] = b.StateMonitor(neuron_groups['Ae'], 'I_ipost', record=True)
+        Ipost_monitors['Ai'] = b.StateMonitor(neuron_groups['Ai'], 'I_ipost', record=True)
 
 if record_spikes:
    b.figure(fig_num)
@@ -830,7 +830,7 @@ while j < (int(num_examples)):
           k += 1
        else:
           # Stop training if the total post-synaptic current is zero (CODE_CHANGE)
-          if (not test_mode) and (np.sum(neuron_groups['Ae'].I_post) == 0):
+          if (not test_mode) and (np.sum(neuron_groups['Ae'].I_ipost) == 0):
               print( 'Number of training examples =', j+1)
               print( 'Number of training iterations =', epoch)
               break
