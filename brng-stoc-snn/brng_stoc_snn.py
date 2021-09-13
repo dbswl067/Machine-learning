@@ -101,9 +101,9 @@ def get_matrix_from_file(fileName, n_src, n_tgt):
     return value_arr
 
 def save_connections(ending = ''):
-    for connName in save_conns:  # save_conns = 'XeAe, AeAi, AiAe'
-        connMatrix = connections[connName][:]   # connections    = {}
-        connListSparse = ([(i,j[0],j[1]) for i in range(connMatrix.shape[0]) for j in zip(connMatrix.rowj[i],connMatrix.rowdata[i])])
+    for connName in save_conns:  # save_conns: XeAe, AeAi, AiAe
+        connMatrix = connections[connName][:]
+        connListSparse = ([(i,j[0],j[1]) for i in range(connMatrix[0]) for j in zip(connMatrix[i],connMatrix[i])])
         np.save(store_weight_path + connName + ending, connListSparse)
 
 def save_theta(ending = ''):
@@ -297,7 +297,7 @@ n_i       = n_e
 #--------------------------------------------------------------------------
 # SNN simulation parameters
 #--------------------------------------------------------------------------
-num_examples        = 6000 * 1
+num_examples        = 60 * 1 ## 6000
 single_example_time = 0.35 * b.second
 resting_time        = 0.15 * b.second
 dt_clock            = 0.5 * b.ms  # Need to change the default clock option in global parameters
