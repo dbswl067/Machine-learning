@@ -385,7 +385,7 @@ else:
     scr_e        = 'theta = theta+theta_plus_e; timer = 0*ms'
 
 if(test_mode or tag_mode):
-   v_thresh_e = '(interp(I_ipost, i_norm, p_switch) > rand())'
+   v_thresh_e = '(interp(x= I_ipost,xp= i_norm,fp= p_switch) > rand())'
    #v_thresh_e = 'I_post>3'
 else:
    v_thresh_e = '(interp(I_ipost, i_norm, p_switch) > rand()) * (img_label==post_label)'
