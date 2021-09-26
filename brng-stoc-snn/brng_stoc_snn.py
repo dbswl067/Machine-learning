@@ -1,6 +1,5 @@
 '''
 Created on 15.12.2014
-
 @author: Peter U. Diehl
 '''
 
@@ -69,7 +68,6 @@ def get_labeled_data(picklename, bTrain = True):
 '''
 def get_matrix_from_file(fileName): # 파일로부터 매트릭스를 가져오는 함수
     offset = len(ending) + 4 # ending=''. offset = 4
-
     # Determine the number of rows of the target matrix # 타겟 행렬의 행 수 결정
     if fileName[-4-offset] == 'X': # 파일 이름이 'X'일 경우. 마지막에서 8번째 글자 X
        n_src = n_input # n_src = 784
@@ -78,13 +76,11 @@ def get_matrix_from_file(fileName): # 파일로부터 매트릭스를 가져오�
           n_src = n_e # n_src = 400
        else:    # 'X'와 'e'가 아닐 경우
           n_src = n_i # n_src = 400
-
     # Determine the number of columns of the target matrix  # 타겟 행렬의 열 수 결정
     if fileName[-1-offset]=='e':    # 파일 이름이 'e'일 경우. 마지막에서 5번째 글자 e
        n_tgt = n_e      # n_tgt = 400
     else:
        n_tgt = n_i      # # n_tgt = 400
-
     readout = np.load(fileName)  # np.save()로 저장된 *.npy 파일을 배열로 불러오기
     # print readout.shape, fileName
     value_arr = np.zeros((n_src, n_tgt))
@@ -93,7 +89,7 @@ def get_matrix_from_file(fileName): # 파일로부터 매트릭스를 가져오�
     return value_arr
 '''
 def get_matrix_from_file(fileName, n_src, n_tgt):
-    readout = np.load(fileName)
+    readout = np.load(fileName, allow_pickle=True)
     print( readout.shape, fileName)
     value_arr = np.zeros((n_src, n_tgt))
     if not readout.shape == (0,):
@@ -623,7 +619,6 @@ for name in input_connection_names:    # input_connection_names: XA
     for connType in input_conn_names:  # input_conn_names      : ee_input
         connName = name[0] + connType[0] + name[1] + connType[1]
         print( '########## Creating connection:' + connName + ' ##########')
-
     print('create connections between X and A')
     if test_mode:
         weightMatrix = get_matrix_from_file(data_path + 'weights/XeAe.npy', n_input, n_e)
@@ -632,23 +627,19 @@ for name in input_connection_names:    # input_connection_names: XA
     model = 'w : 1'
     pre = 'ge_post += w'
     post = ''
-
     if not test_mode:
         print('create STDP for connection XeAe')
         model += eqs_stdp_ee
         pre += '; ' + eqs_stdp_pre_ee
         post = eqs_stdp_post_ee
-
     connections['XeAe'] = b.Synapses(input_groups['Xe'], neuron_groups['Ae'],
                                      model=model, on_pre=pre, on_post=post)
     minDelay = 0 * b.ms
     maxDelay = 10 * b.ms
     deltaDelay = maxDelay - minDelay
-
     connections['XeAe'].connect(True)  # all-to-all connection
     connections['XeAe'].delay = 'minDelay + rand() * deltaDelay'
     connections['XeAe'].w = weightMatrix[connections['XeAe'].i, connections['XeAe'].j]
-
     if ee_STDP_on:
        stdp_methods[name[0]+'e'+name[1]+'e'] = b.STDP(connections[name[0]+'e'+name[1]+'e'], eqs = eqs_stdp_ee, pre = eqs_stdp_pre_ee,
                                                       post = eqs_stdp_post_ee, wmin = wmin_ee, wmax = wmax_ee)
@@ -859,17 +850,19 @@ if not test_mode:
 
     # Tag the excitatory neurons based on their spiking activity
     # update_interval = j
-    # assignments     = get_new_assignments(result_monitor[:], input_numbers[j-update_interval : j])
-    # print '\n------- ASSIGNMENTS --------'
-    # print assignments
-    # save_assignments()
+    assignments     = get_new_assignments(result_monitor[:], input_numbers[j-update_interval : j])
+    print ('\n------- ASSIGNMENTS --------')
+    print (assignments)
+    save_assignments()
 
     print( '\n------- POST_LABELS --------')
     print( post_label)
     save_postlabel()
 
 if((not test_mode) and (not tag_mode)):
-    save_connections()
+    print("ln871. save_connection()")
+    while j < (int(num_examples)):
+        save_connections(str(j))
 
     # Plot the STDP update statistics
     # print "Number of Hebbian depression (switching synapses to '00' state) updates = ", str(np.sum(hebb_dep_count))
@@ -894,6 +887,7 @@ if((not test_mode) and (not tag_mode)):
     # b.title('Hebbian Synaptic Potentiation')
     # fig_hebb_pot.canvas.draw()
 else:
+    print("ln899. np.save()")
     np.save(data_path + 'activity/resultPopVecs' + str(num_examples), result_monitor)
     np.save(data_path + 'activity/inputNumbers' + str(num_examples), input_numbers)
 

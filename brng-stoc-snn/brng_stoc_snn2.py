@@ -82,7 +82,7 @@ def get_matrix_from_file(fileName):
     else:
        n_tgt = n_i
 
-    readout = np.load(fileName)
+    readout = np.load(fileName, allow_pickle=True)
     # print readout.shape, fileName
     value_arr = np.zeros((n_src, n_tgt))
     if not readout.shape == (0,):
@@ -281,10 +281,10 @@ dt_clock            = 0.5 * b.ms  # Need to change the default clock option in g
 num_timesteps       = single_example_time / dt_clock
 runtime             = num_examples * (single_example_time + resting_time)
 
-use_testing_set       = True
+use_testing_set       = False
 use_weight_dependence = True  # Unused
 use_classic_STDP      = True  # Unused
-test_mode             = True
+test_mode             = False
 tag_mode              = False
 
 if num_examples < 10000:
@@ -351,7 +351,7 @@ if not test_mode:
    post_label     = np.zeros(n_e)
 
    for i in range(n_output):
-       post_label[post_indx[i*neurons_per_op:(i+1)*neurons_per_op]] = i
+       post_label[post_indx[int(i*neurons_per_op):int((i+1)*neurons_per_op)]] = i
 
 #--------------------------------------------------------------------------
 # BRNG switching probability characteristics
