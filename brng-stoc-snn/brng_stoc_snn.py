@@ -89,7 +89,10 @@ def get_matrix_from_file(fileName): # 파일로부터 매트릭스를 가져오�
     return value_arr
 '''
 def get_matrix_from_file(fileName, n_src, n_tgt):
-    readout = np.load(fileName, allow_pickle=True)
+    try:
+        readout = np.load(fileName, allow_pickle= True)
+    except:
+        EOFError
     print( readout.shape, fileName)
     value_arr = np.zeros((n_src, n_tgt))
     if not readout.shape == (0,):
@@ -99,7 +102,7 @@ def get_matrix_from_file(fileName, n_src, n_tgt):
 def save_connections(ending = ''):
     for connName in save_conns:  # save_conns: XeAe, AeAi, AiAe
         connMatrix = connections[connName][:]
-        connListSparse = ([(i,j[0],j[1]) for i in range(connMatrix[0]) for j in zip(connMatrix[i],connMatrix[i])])
+        connListSparse = ([(i,j[0],j[1]) for i in range(connMatrix.shape[0]) for j in zip(connMatrix.rowj[i],connMatrix.rowdata[i])])
         np.save(store_weight_path + connName + ending, connListSparse)
 
 def save_theta(ending = ''):
@@ -300,10 +303,10 @@ dt_clock            = 0.5 * b.ms  # Need to change the default clock option in g
 num_timesteps       = single_example_time / dt_clock # 안 씀
 runtime             = num_examples * (single_example_time + resting_time)
 
-use_testing_set       = True
+use_testing_set       = False
 use_weight_dependence = True  # Unused
 use_classic_STDP      = True  # Unused
-test_mode             = True
+test_mode             = False
 tag_mode              = False
 
 if num_examples < 10000:
@@ -860,9 +863,11 @@ if not test_mode:
     save_postlabel()
 
 if((not test_mode) and (not tag_mode)):
-    print("ln871. save_connection()")
-    while j < (int(num_examples)):
-        save_connections(str(j))
+    save_connections()
+    ##print("ln871. save_connection()")
+    ##while j < (int(num_examples)):
+        ##save_connections(str(j))
+        ##j += 1
 
     # Plot the STDP update statistics
     # print "Number of Hebbian depression (switching synapses to '00' state) updates = ", str(np.sum(hebb_dep_count))
