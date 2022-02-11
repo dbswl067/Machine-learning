@@ -123,7 +123,7 @@ for i = 1:epochs %replace by epochs % 1000회 for문 돌림
             if spikes(train,t) == 1                     % spikes의 요소가 1일 경우
                 t_pre(1,train) = t;                     % 해당 위치에 timing 저장
                 for l = 1:OpNeurons                     % 10회 for문 돌림
-                    weights_e(train,l) = weights_e(train,l) - eta2*weights_e(train,l)*exp((t_post(l)-t_pre(train))/tau_STDP2) ;  % 가중치 업데이트 w = w - 0.01 * e^((t - y) / 5)
+                    weights_e(train,l) = weights_e(train,l) - eta2*weights_e(train,l)*exp((t_post(l)-t_pre(train))/tau_STDP2) ;  % 가중치 업데이트 w = w - 0.01 * w * e^((t - y) / 5)
                     if weights_e(train,l)>1         % 1보다 클 경우
                         weights_e(train,l)=1;       % 값을 1로 설정
                     elseif weights_e(train,l)<0     % 0보다 작을 경우
